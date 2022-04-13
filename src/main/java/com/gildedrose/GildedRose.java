@@ -13,9 +13,7 @@ class GildedRose {
     }
 
     public void updateQuality() {
-        for (Item item : items) {
-            updateQualityOfItem(item);
-        }
+        items.forEach(this::updateQualityOfItem);
     }
 
     private void updateQualityOfItem(Item item) {
