@@ -8,6 +8,10 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class GildedRoseTest {
 
+    public static final String AGED_BRIE = "Aged Brie";
+    public static final String BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT = "Backstage passes to a TAFKAL80ETC concert";
+    public static final String SULFURAS_HAND_OF_RAGNAROS = "Sulfuras, Hand of Ragnaros";
+
     @Test
     void updateQuality_shouldNotAlterTheItemName() {
         Item[] items = new Item[]{new Item("foo", 0, 0)};
@@ -27,7 +31,7 @@ class GildedRoseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"generic item", "Aged Brie", "Backstage passes to a TAFKAL80ETC concert"})
+    @ValueSource(strings = {"generic item", AGED_BRIE, BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT})
     void updateQuality_withAnyItem_shouldDecreaseSellInByOne(String itemName) {
         Item[] items = new Item[]{new Item(itemName, -1, 13)};
         GildedRose app = new GildedRose(items);
@@ -37,7 +41,7 @@ class GildedRoseTest {
 
     @Test
     void updateQuality_withAgedBrieNonExpired_shouldIncreaseQualityBy1() {
-        Item[] items = new Item[]{new Item("Aged Brie", 1, 0)};
+        Item[] items = new Item[]{new Item(AGED_BRIE, 1, 0)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(1);
@@ -45,7 +49,7 @@ class GildedRoseTest {
 
     @Test
     void updateQuality_withAgedBrieExpired_shouldIncreaseQualityBy2() {
-        Item[] items = new Item[]{new Item("Aged Brie", 0, 0)};
+        Item[] items = new Item[]{new Item(AGED_BRIE, 0, 0)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(2);
@@ -76,7 +80,7 @@ class GildedRoseTest {
     }
 
     @ParameterizedTest
-    @ValueSource(strings = {"Aged Brie", "Backstage passes to a TAFKAL80ETC concert"})
+    @ValueSource(strings = {AGED_BRIE, BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT})
     void updateQuality_withAgedBrieAndQuality50_thenQualityShouldNeverBeIncreasedAbove50(String itemName) {
         Item[] items = new Item[]{new Item(itemName, 2, 50)};
         GildedRose app = new GildedRose(items);
@@ -86,17 +90,17 @@ class GildedRoseTest {
 
     @Test
     void updateQuality_withItemSulfuras_shouldNeverBeAltered() {
-        Item[] items = new Item[]{new Item("Sulfuras, Hand of Ragnaros", 29, 80)};
+        Item[] items = new Item[]{new Item(SULFURAS_HAND_OF_RAGNAROS, 29, 80)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
-        var expectedItem = new Item("Sulfuras, Hand of Ragnaros", 29, 80);
+        var expectedItem = new Item(SULFURAS_HAND_OF_RAGNAROS, 29, 80);
         assertThat(app.items[0]).usingRecursiveComparison().isEqualTo(expectedItem);
     }
 
     @ParameterizedTest
     @ValueSource(ints = {11, 20, 90})
     void updateQuality_withBackstagePassAndSellinGreaterThan10_shouldIncreaseQualityBy1(int sellIn) {
-        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, 20)};
+        Item[] items = new Item[]{new Item(BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT, sellIn, 20)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(21);
@@ -105,7 +109,7 @@ class GildedRoseTest {
     @ParameterizedTest
     @ValueSource(ints = {10, 9, 8, 7, 6})
     void updateQuality_withBackstagePassAndSellinBetween6And10Inclusive_shouldIncreaseQualityBy2(int sellIn) {
-        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, 20)};
+        Item[] items = new Item[]{new Item(BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT, sellIn, 20)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(22);
@@ -114,7 +118,7 @@ class GildedRoseTest {
     @ParameterizedTest
     @ValueSource(ints = {5, 4, 3, 2, 1})
     void updateQuality_withBackstagePassAndSellinBetween1And5Inclusive_shouldIncreaseQualityBy3(int sellIn) {
-        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", sellIn, 20)};
+        Item[] items = new Item[]{new Item(BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT, sellIn, 20)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isEqualTo(23);
@@ -122,7 +126,7 @@ class GildedRoseTest {
 
     @Test
     void updateQuality_withBackstagePassAndSellinOf0_shouldDecreaseQualityTo0() {
-        Item[] items = new Item[]{new Item("Backstage passes to a TAFKAL80ETC concert", 0, 20)};
+        Item[] items = new Item[]{new Item(BACKSTAGE_PASSES_TO_A_TAFKAL_80_ETC_CONCERT, 0, 20)};
         GildedRose app = new GildedRose(items);
         app.updateQuality();
         assertThat(app.items[0].quality).isZero();
